@@ -1,8 +1,7 @@
 <?php
    // code with validation will be here and saving user will be here
    $name = $email = $gender = "";
-   $err= "";
-   
+   $err= "Invalid Data";
    if (isset($_POST["knopa"]))
    {
       if(!empty($_POST["name"]) && !empty($_POST["email"]) && !empty($_POST["gender"]))
@@ -10,6 +9,7 @@
          $name=$_POST["name"];
          $email=$_POST["email"];
          $gender=$_POST["gender"];
+         $filePath = include 'uploads.php';
          // якщо файл не існує, створіть його:
          if (!file_exists('database/users.csv')) {
             file_put_contents('database/users.csv', '');
@@ -17,12 +17,8 @@
 
          // запис в файл в режимі додавання
          $fp = fopen('database/users.csv', 'a');
-         fwrite($fp, "$name,$email,$gender \n");
+         fwrite($fp, "$name,$email,$gender,$filePath\n");
          fclose($fp);
-      }
-      else
-      {
-         $err="Invalid Data";
       }
    }
 ?>
@@ -42,12 +38,11 @@
    </style>
 </head>
 <body style="padding-top: 3rem;">
- 
 <div class="container">
-<?php if(!empty($_POST["name"]) || !empty($_POST["email"]) || !empty($_POST["gender"])){ ?>
+<?php if(!empty($_POST["name"]) && !empty($_POST["email"]) && !empty($_POST["gender"])){ ?>
    User Added <?php echo $_POST["name"]; ?><br>
    Email <?php echo $_POST["email"]; ?><br>
-   Gender <?php echo $_POST["gender"]; ?></span>
+   Gender <?php echo $_POST["gender"]; ?><br>
 <?php }
 else {?>
    <span class="error"><?php echo $err;?></span>
