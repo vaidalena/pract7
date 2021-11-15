@@ -1,3 +1,12 @@
+<?php
+    session_start();
+    $isRestricted=false;
+    if(isset($_SESSION['auth']) && $_SESSION['auth']===true)
+    {
+        $isRestricted=true;
+    }
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,10 +22,13 @@
        .container {
            width: 400px;
        }
+       .error { color: #FF0000; }
    </style>
 </head>
 <body>
 <div class="container">
+    <?php if($isRestricted):?>
+
    <h3>Add New User</h3>
    <form action="handler.php" method="post" enctype="multipart/form-data">
        <div class="row">
@@ -55,7 +67,13 @@
            </div>
        </div>
        <input type="submit" class="btn" name="knopa" value="Add">
+       <a class="btn" href="login.php">Login</a>
    </form>
+   <?php else:?>
+        <span class="error">
+            Content is restricted, please <a href="login.php">Login</a>
+        </span>
+    <?php endif;?>
 </div>
 </body>
 </html>

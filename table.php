@@ -30,28 +30,18 @@
         </thead>
         <tbody>
     <?php
-        if (file_exists('database/users.csv')){ $run=true; }
-        else { $run=false; }
-        if($run==true)
+        require 'db.php';
+        $sql = "SELECT * FROM users";
+        $result = $conn->query($sql);
+        
+        if ($result->num_rows > 0) 
         {
-            $file=file_get_contents('database/users.csv');
-            $users;
-            if(!empty($file))
-            {
-                $arr=explode("\n", $file);
-            
-                foreach($arr as $el)
-                {
-                    if(!empty($el))
-                    {
-                        $users=explode(",", $el); 
-                        echo "<tr><td>" . $users[0] . "</td><td>" . $users[1] . "</td><td>" . $users[2] . "</td><td>" . "<img src='" . $users[3] . "' width='120' height='120'></td></tr><br>";
-                    }
-                } 
-                unset($el);
-            }
-        }
-        else echo "В файле нету данных!";
+           // output data of each row
+           while($row = $result->fetch_assoc()) 
+           {
+                echo "<tr><td>" . $row['name'] . "</td><td>" . $row['email'] . "</td><td>" . $row['gender'] . "</td><td>" . "<img src='" . $row['path_to_img'] . "' width='120' height='120'></td></tr><br>";
+           }
+        }        
         ?>
         </tbody>
     </table>

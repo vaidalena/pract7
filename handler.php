@@ -9,16 +9,19 @@
          $name=$_POST["name"];
          $email=$_POST["email"];
          $gender=$_POST["gender"];
+         require 'db.php';
          $filePath = include 'uploads.php';
-         // якщо файл не існує, створіть його:
-         if (!file_exists('database/users.csv')) {
-            file_put_contents('database/users.csv', '');
+         
+         // id можно не вказувати, тому що auto increment
+         // пароль будемо встановлювати всім однаковий
+         $sql = "INSERT INTO users (email, name, gender, password, path_to_img)
+         VALUES ('$email', '$name','$gender', '11111', '$filePath')";
+         echo $sql;
+         $res = mysqli_query($conn, $sql);
+         if ($res) 
+         {
+            $valid = true;
          }
-
-         // запис в файл в режимі додавання
-         $fp = fopen('database/users.csv', 'a');
-         fwrite($fp, "$name,$email,$gender,$filePath\n");
-         fclose($fp);
       }
    }
 ?>
