@@ -1,32 +1,15 @@
-
 <?php
-for ($x = 0; $x <= 10; $x++) {
-   echo 'The number is: $x <br>';
-}
-?>
-<?php
-$index = 1;
-echo "test ".$index." end of test";
-?>
+session_start();
+require_once 'config/db.php';
+require_once 'route/web.php';
 
-<?php
-$days = ["Mon", "Tue", "Wed"];
-echo "I like " . $days[0] . ", and hate " . $days[1] . " and " . $days[2] . ". <br>";
-echo "Array Length: ".count($days)."<br>";
-$days = ["Mon", "Tue", "Wed"];
-for ($i = 0; $i < count($days); $i++) {
-   echo $days[$i];
-   echo "<br>";
-}
+//define controller and action
+$controllerName = isset($_GET['controller']) ? $_GET['controller'] : 'index';
+$actionName = isset($_GET['action']) ? $_GET['action'] : 'index';
 
-$age = ["Mon" => "8:00", "Tue" => "9:00", "Wed" => "42"];
-echo "Mon start at " . $age['Mon']."<br>";
+//завантажуємо об’єкт роутінга
+$routing = new Route();
+//завантажуємо об'єкт моделі
+$db = new Db();
 
-foreach($age as $key => $value) {
-   echo "Key=" . $key . ", Value=" . $value;
-   echo "<br>";
-}
-?>
-<?php
-phpinfo();
-?>
+$routing->loadPage($db, $controllerName, $actionName);
